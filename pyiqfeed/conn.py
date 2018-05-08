@@ -2080,13 +2080,17 @@ class HistoryConn(FeedConn):
         else:
             return data
 
-    def request_bars_in_period(self, ticker: str, interval_len: int,
-                               interval_type: str, bgn_prd: datetime.datetime,
+    def request_bars_in_period(self, ticker: str,
+                               interval_len: int,
+                               interval_type: str,
+                               bgn_prd: datetime.datetime,
                                end_prd: datetime.datetime,
                                bgn_flt: datetime.time = None,
                                end_flt: datetime.time = None,
-                               ascend: bool = False, max_bars: int = None,
-                               timeout: int = None) -> np.array:
+                               ascend: bool = False,
+                               max_bars: int = None,
+                               timeout: int = None
+                               label_at_beginning: bool = True) -> np.array:
         """
         Get bars for a specific period.
 
@@ -2126,9 +2130,9 @@ class HistoryConn(FeedConn):
         bars_per_batch = 100
         if max_bars is not None:
             bars_per_batch = min((100, max_bars))
-        req_cmd = ("HIT,%s,%d,%s,%s,%s,%s,%s,%d,%s,%d,%s\r\n" % (
+        req_cmd = ("HIT,%s,%d,%s,%s,%s,%s,%s,%d,%s,%d,%s,%d\r\n" % (
             ticker, interval_len, bp_str, ep_str, mb_str, bf_str, ef_str,
-            ascend, req_id, bars_per_batch, interval_type))
+            ascend, req_id, bars_per_batch, interval_type,label_at_beginning))
         self._send_cmd(req_cmd)
         self._req_event[req_id].wait(timeout=timeout)
         data = self._read_bars(req_id)
