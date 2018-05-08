@@ -2089,7 +2089,7 @@ class HistoryConn(FeedConn):
                                end_flt: datetime.time = None,
                                ascend: bool = False,
                                max_bars: int = None,
-                               timeout: int = None
+                               timeout: int = None,
                                label_at_beginning: bool = True) -> np.array:
         """
         Get bars for a specific period.
